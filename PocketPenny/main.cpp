@@ -1,12 +1,26 @@
 #include <QtCore/QCoreApplication>
 #include <iostream>
-
+#include "ProfileInfo.h"
+#include "Category.h"
+#include "Expense.h"
 using namespace std;
+
+
+basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const
+QString& str) {
+   return os << qPrintable(str);
+}
 
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
-
+    /*
+    ProfileInfo *p = new ProfileInfo("gaurav", 10000,8000);
+    cout<<" hie manku "<<endl;
+    QString name = p->getName();
+    cout<<name<<endl;
+    int budget = p->getCurrentBudget();
+    cout<<budget<<endl;
 
     cout << "App starting ... "<<endl;
 
@@ -14,6 +28,14 @@ int main(int argc, char *argv[])
     // connect to database
     // create user profile
 
+    Category *c = new Category(1,"Travelling");
+    cout<<"Category"<<c->getCatName()<<endl;
+*/
+    //QDate *d = new QDate(2011,2,12);
+    QDate d = QDate::currentDate();
+    QTime t = QTime::currentTime();
+    Expense *e = new Expense(1,1,100.0,d,t);
+    cout<<e->getExpId()<<" "<<e->getCatId()<<" "<<e->getAmount()<<" "<<e->getExpDate().toString()<<" "<<e->getExpxpTime().toString()<<endl;
     int option;
 
     while(1){
@@ -83,4 +105,5 @@ int main(int argc, char *argv[])
 
   }
   return a.exec();
+
 }

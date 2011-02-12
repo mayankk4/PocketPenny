@@ -16,7 +16,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    ProfileInfo.cpp
+    ProfileInfo.cpp \
+    Category.cpp \
+    Expense.cpp
 
 HEADERS += \
-    ProfileInfo.h
+    ProfileInfo.h \
+    Category.h \
+    Expense.h
