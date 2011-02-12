@@ -1,0 +1,22 @@
+#-------------------------------------------------
+#
+# Project created by QtCreator 2011-02-12T08:57:07
+#
+#-------------------------------------------------
+
+QT       += core
+
+QT       -= gui
+
+TARGET = PocketPenny
+CONFIG   += console
+CONFIG   -= app_bundle
+
+TEMPLATE = app
+
+
+SOURCES += main.cpp \
+    ProfileInfo.cpp
+
+HEADERS += \
+    ProfileInfo.h
