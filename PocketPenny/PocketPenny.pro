@@ -20,7 +20,8 @@ TEMPLATE = app
 SOURCES += main.cpp \
     persistantmanager.cpp \
     Category.cpp \
-    Expense.cpp
+    Expense.cpp  \
+    ProfileInfo.cpp
 
 
 HEADERS += ProfileInfo.h \
