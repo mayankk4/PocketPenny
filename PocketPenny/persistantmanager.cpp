@@ -1,4 +1,7 @@
 #include <QVariant>
+#include <QDate>
+#include <QTime>
+
 #include "iostream"
 
 #include "Category.h"
@@ -33,7 +36,6 @@ bool PersistantManager::initDB()
    return (ret1&&ret2&&ret3);
 }
 
-
 QSqlError PersistantManager::lastError()
     {
     // If opening database has failed user can ask
@@ -50,14 +52,18 @@ bool PersistantManager::deleteDB()
     return QFile::remove("pocketpenny.db.sqlite");
     }
 
+
+/***********************************************************/
+
 bool PersistantManager::createCategoryTable()
 {
     // Create table "category"
     bool ret = false;
 
-    cout<<" creating category table. DB " <<db.isOpen()<<endl;
+    cout<<"Creating category table. DB " <<db.isOpen()<<endl;
+
     if (db.isOpen())
-        {cout<<" creating category table" <<endl;
+        {
         QSqlQuery query;
 
         ret = query.exec("create table category "
@@ -66,6 +72,9 @@ bool PersistantManager::createCategoryTable()
                   );
 
         }
+
+
+    cout <<" Catagory table status : " << ret << endl;
     return ret;
 
 }
@@ -81,7 +90,8 @@ int PersistantManager::insertCategory(Category* passCat)
         // NULL = is the keyword for the autoincrement to generate next value
         QSqlQuery query;
         ret = query.exec(QString("insert into category values(NULL,'%1')")
-        .arg(passCat->getCatName()));
+        .arg(passCat->getCatName())
+        );
 
         // Get database given autoincrement value
         if (ret)
@@ -116,60 +126,92 @@ bool PersistantManager::viewCategory()
 
 }
 
+int PersistantManager::getCatIdFromCatName(QString catName)
+{
+    int id;
+    QSqlQuery query(QString("select catid from category where catname = '%1'")
+                    .arg(catName) );
+
+    if(query.next())
+    {
+        id = query.value(0).toInt();
+    }
+
+    return id;
+}
+
+
+/***********************************************************/
+
 bool PersistantManager::createExpenseTable()
     {
     // Create table "expense"
 
-    bool ret1 = false;
-    bool ret2 = false;
-    bool ret3 = false;
+    bool ret = false;
+
+    cout<<"Creating expense table. DB " << db.isOpen() << endl;
 
     if (db.isOpen())
         {
         QSqlQuery query;
 
-        ret1 = query.exec("create table expense "
+        ret = query.exec("create table expense "
                   "(expid integer primary key, "
-                  "exptime TIME, "
-                  "expdate DATE, "
-                  "catid varchar(30 "
-                  "amount float);"
-                  " FOREIGN KEY(catid) REFERENCES category(catid)"
+                  "exptime TEXT, "
+                  "expdate TEXT, "
+                  "catid varchar(30), "
+                  "amount float,"
+                  " FOREIGN KEY(catid) REFERENCES category(catid));"
                   );
 
-        ret2 = query.exec("CREATE TRIGGER insert_expense_exptime"
+/*        ret2 = query.exec("CREATE TRIGGER insert_expense_exptime"
                   "AFTER  INSERT ON expense"
                   "BEGIN"
                   "UPDATE expense SET exptime = TIME('NOW')"
                   "WHERE expid = new.expid;"
                   "END;");
 
-        ret3 = query.exec("CREATE TRIGGER insert_expense_expDate"
+        ret3 = query.exec("CREATE TRIGGER insert_expense_expdate"
                   "AFTER  INSERT ON expense "
                   "BEGIN"
                   "UPDATE expense SET  expdate = DATE('NOW')"
                   "WHERE expid = new.expid;"
                   "END; ");
+*/
+
         }
-    return (ret1&&ret2&&ret3);
+
+    cout <<" Expense table status : " << ret << endl;
+
+    return ret;
     }
 
-
-int PersistantManager::insertExpense(Expense* passExp)
+int PersistantManager::insertExpense(QString expCatName, float expAmount)
     {
     int newId = -1;
+    int expCatId;
+
     bool ret = false;
+
+    expCatId = getCatIdFromCatName(expCatName);
 
     if (db.isOpen())
         {
         //http://www.sqlite.org/autoinc.html
         // NULL = is the keyword for the autoincrement to generate next value
 
+        cout << qPrintable(QTime::currentTime().toString()) << endl
+             << qPrintable(QDate::currentDate().toString()) << endl;
+
         QSqlQuery query;
-        ret = query.exec(QString("insert into Expense values(NULL,'%1','%2',%3,%4)")
-        .arg(passExp->getExpDate().toString()).arg(passExp->getExpxpTime().toString())
-        .arg(passExp->getCatId()).arg(passExp->getAmount())
-        );
+        ret = query.exec(QString("insert into expense values(NULL,'%1','%2',%3,%4)")
+                         .arg(QTime::currentTime().toString())
+                         .arg(QDate::currentDate().toString())
+                         .arg(expCatId)
+                         .arg(expAmount)
+                         );
+
+        cout << "insert expense ret " << ret << endl << endl;
 
         // Get database given autoincrement value
         if (ret)
@@ -182,14 +224,53 @@ int PersistantManager::insertExpense(Expense* passExp)
     return newId;
     }
 
+bool PersistantManager :: viewExpense(){
+
+    bool ret = false;
+    cout << "Expenses are :" << endl;
+
+    if (db.isOpen())
+    {
+        QSqlQuery query(QString("select * from expense") );
+
+        while(query.next())
+            {
+            cout << "expense : " << endl;
+            int expId =  query.value(0).toInt();
+            cout << expId << endl;
+
+            QString expTime =  query.value(1).toTime().toString();
+            cout <<  qPrintable(expTime) << endl;
+
+            QString expDate =  query.value(2).toDate().toString();
+            cout <<  qPrintable(expDate) << endl;
+
+            int expCatId =  query.value(3).toInt();
+            cout <<  expCatId << endl;
+
+            int amount =  query.value(4).toInt();
+            cout <<  amount << endl;
+
+            ret = true;
+            }
+    }
+
+
+    return ret;
+
+}
+
+
+/***********************************************************/
+
 bool PersistantManager::createProfileInfoTable()
 {
     // Create table "profileinfo"
     bool ret = false;
 
-    cout<<" creating profileinfo table. DB " <<db.isOpen()<<endl;
+    cout<<"Creating profileinfo table. DB " <<db.isOpen()<<endl;
     if (db.isOpen())
-        {cout<<" creating profileinfo table" <<endl;
+        {
         QSqlQuery query;
 
         ret = query.exec("create table profileinfo "
@@ -200,7 +281,9 @@ bool PersistantManager::createProfileInfoTable()
                   );
 
         }
-    cout<<" profileinfo table status : "<<ret<<endl;
+
+    cout<<" Profileinfo table status : " << ret << endl;
+
     return ret;
 
 }

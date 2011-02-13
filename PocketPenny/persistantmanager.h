@@ -27,11 +27,13 @@ public:
     int nextId();
 
     // for Expense Table
-    int insertExpense(Expense*);
+    int insertExpense(QString expCatName, float expAmount);
+    bool viewExpense();
 
     // for Category Table
     int insertCategory(Category*);
     bool viewCategory();
+    int getCatIdFromCatName(QString catName);
 
     // for UserProfile Table
     int insertProfileInfo(ProfileInfo*);

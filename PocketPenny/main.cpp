@@ -26,10 +26,14 @@ int main(int argc, char *argv[])
 
     PersistantManager* pm = new PersistantManager();
 
-    cout<<"Opening Db :" << (pm->openDB() ? "Successful" : "Failed") << endl;
+    cout<<"Opening Db :" << (pm->openDB() ? " Successful" : " Failed") << endl;
+
     cout<<"Initializing Db " << endl;
     pm->initDB();
-    cout << "Connection created Successfully ... " << endl;
+
+    cout << "DB Initialised" << endl;
+
+    cout << "Connections created Successfully ... " << endl << endl;
 
     while(1){
     cout << "Enter 1 to add expense"  << endl
@@ -44,16 +48,21 @@ int main(int argc, char *argv[])
          << "Enter 8 to edit user profile" << endl
 
          << "Enter 9 to view records of past months" << endl
-         << "Enter 0 to exit" << endl;
+         << "Enter 0 to exit" << endl << endl;
 
     int option;
     cin >> option; // edit includes edit and delete
 
-    QString catName;
+    QString catName, expCatName;
+    int lastCatId, lastExpId;
+    float expAmount;
     QFile file;
+
     Category* passCat;
+
     QTextStream qtin(&file);
-    int lastCatId;
+    file.open(stdin, QIODevice::ReadOnly);
+	
     ProfileInfo* passPI;
     QString name;
     int currentsalary;
@@ -62,34 +71,23 @@ int main(int argc, char *argv[])
     switch(option){
 
         case 1 :
-            /*
-            cout << "Enter expense date :";
-            file.open(stdin, QIODevice::ReadOnly);
-            qtin >> expDate;
+            pm->viewCategory();
 
-            cout << "Enter expense time :";
-            file.open(stdin, QIODevice::ReadOnly);
-            qtin >> expTime;
-
-            cout << "Enter expense category name :";
-            file.open(stdin, QIODevice::ReadOnly);
+            cout << "Enter expense category name : " << endl;
             qtin >> expCatName;
+            cout << "the name u entered is : " << qPrintable(expCatName) <<endl;
 
-            cout << "Enter expense amount :";
-            file.open(stdin, QIODevice::ReadOnly);
-            qtin >> expAmount;
+            cout << "Enter expense amount : " << endl;
+            qtin >> expAmount;            
+            cout << "the amount u entered is : " << expAmount <<endl;
 
-            passCat = new Category(catName);
-            lastCatId = pm->insertCategory(passCat);
-            */
-
-
+            lastExpId = pm->insertExpense(expCatName, expAmount);
             break;
 
-
-
-
         case 2 :
+            cout << "Showing all expenses :" << endl;
+            pm->viewExpense();
+            break;
 
         case 3 :
 
@@ -98,7 +96,6 @@ int main(int argc, char *argv[])
         case 4 :
             cout << "Enter category name :";
 
-            file.open(stdin, QIODevice::ReadOnly);
             qtin >> catName;
 
             passCat = new Category(catName);
@@ -118,7 +115,7 @@ int main(int argc, char *argv[])
             break;
         case 8 :
             cout << "Enter profileinfo : ";
-            file.open(stdin, QIODevice::ReadOnly);
+
             cout << "Please enter your name : ";
             qtin >> name;
             cout << "Please enter your currentsalary : ";
