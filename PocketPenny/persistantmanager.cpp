@@ -21,15 +21,17 @@ bool PersistantManager::openDB()
 
     // NOTE: File exists in the application private folder, in Symbian Qt implementation
     db.setDatabaseName("pocketpenny.db.sqlite");
-    cout<<"database created"<<endl;
 
-
-    // createProfileInfoTable()
-    // createMonthRecordTable())
-
-    // Open databasee
     return db.open();
     }
+
+bool PersistantManager::initDB()
+{
+   bool ret1 = createCategoryTable();
+   bool ret2 = createExpenseTable();
+   return (ret1&&ret2);
+}
+
 
 QSqlError PersistantManager::lastError()
     {
@@ -56,6 +58,7 @@ bool PersistantManager::createCategoryTable()
     if (db.isOpen())
         {cout<<" creating category table" <<endl;
         QSqlQuery query;
+
         ret = query.exec("create table category "
                   "(catid integer primary key, "
                   "catname varchar(30)); "
@@ -94,15 +97,13 @@ bool PersistantManager::viewCategory()
 {
 
     bool ret = false;
-    cout << "Inside view cat" << endl;
+    cout << "Catagories are :" << endl;
     if (db.isOpen())
     {
-        cout<<"DB open trying to view cat-values "<<endl;
         QSqlQuery query(QString("select * from category") );
-        cout<< query.size();
+
         while(query.next())
             {
-            cout << "Inside view cat query.next" << endl;
             QString opt =  query.value(1).toString();
             cout <<  qPrintable(opt)<< endl;
             ret = true;

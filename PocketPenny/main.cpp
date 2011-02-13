@@ -20,47 +20,14 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    /*
-    ProfileInfo *p = new ProfileInfo("gaurav", 10000,8000);
-    cout<<" hie manku "<<endl;
-    QString name = p->getName();
-    cout<<name<<endl;
-    int budget = p->getCurrentBudget();
-    cout<<budget<<endl;
-
-
-    // create database tables
-    // connect to database
-    // create user profile
-
-    Category *c = new Category(1,"Travelling");
-    cout<<"Category"<<c->getCatName()<<endl;
-
-    //QDate *d = new QDate(2011,2,12);
-
-    QDate d = QDate::currentDate();
-    QTime t = QTime::currentTime();
-
-    Expense *e = new Expense(1,1,100.0,d,t);
-
-    cout<<e->getExpId()<<" "<<e->getCatId()<<" "<<e->getAmount()<<" "<<e->getExpDate().toString()<<" "<<e->getExpxpTime().toString()<<endl;
-
-*/
-
     cout << "App starting ... "<<endl;
 
     cout << "Creating Database connection ... " << endl;
 
     PersistantManager* pm = new PersistantManager();
 
-    //while(!pm->openDB());
-    cout<<"Opening Db "<<pm->openDB()<<endl;
-
-    pm->createCategoryTable();
-    cout << "Catagory table created" <<endl;
-
-    pm->createExpenseTable();
-    cout << "Expense table created" <<endl;
+    cout<<"Opening Db :" << (pm->openDB() ? "Successful" : "Failed") << endl;
+    cout<<"Initializing Db " << endl;
 
     cout << "Connection created Successfully ... " << endl;
 
@@ -69,9 +36,9 @@ int main(int argc, char *argv[])
          << "Enter 2 to view all expenses" << endl
          << "Enter 3 to edit an expense" << endl
 
-         << "Enter 4 to add catagory" << endl
+         << "Enter 4 to add category" << endl
          << "Enter 5 to view all catagories" << endl
-         << "Enter 6 to edit catagory" << endl
+         << "Enter 6 to edit category" << endl
 
          << "Enter 7 to view user profile" << endl
          << "Enter 8 to edit user profile" << endl
@@ -100,7 +67,7 @@ int main(int argc, char *argv[])
             file.open(stdin, QIODevice::ReadOnly);
             qtin >> expTime;
 
-            cout << "Enter expense catagory name :";
+            cout << "Enter expense category name :";
             file.open(stdin, QIODevice::ReadOnly);
             qtin >> expCatName;
 
@@ -125,7 +92,7 @@ int main(int argc, char *argv[])
             break;
 
         case 4 :
-            cout << "Enter catagory name :";
+            cout << "Enter category name :";
 
             file.open(stdin, QIODevice::ReadOnly);
             qtin >> catName;

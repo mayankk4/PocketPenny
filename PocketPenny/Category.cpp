@@ -2,25 +2,25 @@
 
 Category::Category()
 {
-    //this->catId = 0;
+    this->catId = 0;
     this->catName = "";
 }
 
 Category::Category( QString catName)
 {
-   // this->catId = catId;
+    this->catId = 0;
     this->catName = catName;
 }
 
-//void Category::setCatId(int catId)
-//{
-//    this->catId = catId;
-//}
+void Category::setCatId(int catId)
+{
+    this->catId = catId;
+}
 
-//int Category::getCatId()
-//{
-//    return catId;
-//}
+int Category::getCatId()
+{
+    return catId;
+}
 
 void Category::setCatName(QString catName)
 {

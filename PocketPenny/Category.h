@@ -5,13 +5,13 @@
 class Category
 {
 private:
-    //int catId;
+    int catId;
     QString catName;
 public:
     Category();
     Category(QString);
-    //void setCatId(int);
-    //int getCatId();
+    void setCatId(int);
+    int getCatId();
     void setCatName(QString);
     QString getCatName();
 };
