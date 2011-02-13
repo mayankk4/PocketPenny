@@ -1,11 +1,13 @@
 #include "ProfileInfo.h"
 
+/*
 ProfileInfo::ProfileInfo()
 {
     this->name = "";
     this->currentSalary = 0;
     this->currentBudget = 0;
 }
+*/
 
 ProfileInfo::ProfileInfo(QString name,int currentSalary,int currentBudget)
 {

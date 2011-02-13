@@ -7,7 +7,7 @@
 class Expense
 {
 private:
-    int expId;
+   // int expId;
     int catId;
     float amount;
     QDate expDate;
@@ -15,9 +15,9 @@ private:
 
 public:
     Expense();
-    Expense(int,int,float,QDate,QTime);
-    void setExpId(int);
-    int getExpId();
+    Expense(int,float,QDate,QTime);
+    //void setExpId(int);
+    //int getExpId();
     void setCatId(int);
     int getCatId();
     void setAmount(float);

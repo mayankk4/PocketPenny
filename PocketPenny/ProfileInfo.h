@@ -2,12 +2,14 @@
 #define PROFILEINFO_H
 
 #include <QString>
+
 class ProfileInfo
 {
 private:
     QString name;
     int currentSalary;
     int currentBudget;
+
 public:
     ProfileInfo();
     ProfileInfo(QString ,int ,int);

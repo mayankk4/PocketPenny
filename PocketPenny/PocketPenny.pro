@@ -5,7 +5,7 @@
 #-------------------------------------------------
 
 QT       += core \
-			QtSql
+            sql
 
 QT       -= gui
 
@@ -18,18 +18,13 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp \
-    ProfileInfo.cpp \
     persistantmanager.cpp \
-    ProfileInfo.cpp \
     Category.cpp \
     Expense.cpp
 
 
-HEADERS += \
-
-    ProfileInfo.h \
+HEADERS += ProfileInfo.h \
     persistantmanager.h \
     ProfileInfo.h \
     Category.h \
     Expense.h
-
