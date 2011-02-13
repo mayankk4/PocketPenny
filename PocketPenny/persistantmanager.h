@@ -34,13 +34,16 @@ public:
     bool viewCategory();
 
     // for UserProfile Table
+    int insertProfileInfo(ProfileInfo*);
+    bool viewProfileInfo();
+
     // for Months Table
 
     QSqlError lastError();
 
     bool createExpenseTable();
     bool createCategoryTable();
-//    bool createProfileInfoTable();
+    bool createProfileInfoTable();
 //    bool createMonthRecordTable();
 
 private:

@@ -6,6 +6,7 @@
 class ProfileInfo
 {
 private:
+    int proId;
     QString name;
     int currentSalary;
     int currentBudget;
@@ -13,6 +14,8 @@ private:
 public:
     ProfileInfo();
     ProfileInfo(QString ,int ,int);
+    void setProId(int);
+    int getProId();
     void setName(QString);
     QString getName();
     void setCurrentSalary(int);

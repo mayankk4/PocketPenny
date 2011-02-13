@@ -23,7 +23,6 @@ SOURCES += main.cpp \
     Expense.cpp  \
     ProfileInfo.cpp
 
-
 HEADERS += ProfileInfo.h \
     persistantmanager.h \
     ProfileInfo.h \

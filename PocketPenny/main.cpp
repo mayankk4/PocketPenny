@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 
     cout<<"Opening Db :" << (pm->openDB() ? "Successful" : "Failed") << endl;
     cout<<"Initializing Db " << endl;
-
+    pm->initDB();
     cout << "Connection created Successfully ... " << endl;
 
     while(1){
@@ -54,7 +54,11 @@ int main(int argc, char *argv[])
     Category* passCat;
     QTextStream qtin(&file);
     int lastCatId;
-
+    ProfileInfo* passPI;
+    QString name;
+    int currentsalary;
+    int currentbudget;
+    int lastProId;
     switch(option){
 
         case 1 :
@@ -110,9 +114,23 @@ int main(int argc, char *argv[])
         case 6 :
 
         case 7 :
-
+            pm->viewProfileInfo();
+            break;
         case 8 :
+            cout << "Enter profileinfo : ";
+            file.open(stdin, QIODevice::ReadOnly);
+            cout << "Please enter your name : ";
+            qtin >> name;
+            cout << "Please enter your currentsalary : ";
+            qtin >> currentsalary;
+            cout << "Please enter your currentbudget : ";
+            qtin >> currentbudget;
 
+            passPI = new ProfileInfo(name,currentsalary,currentbudget);
+            lastProId = pm->insertProfileInfo(passPI);
+
+            cout<<" last inserted profile id "<<lastProId<<endl;
+            break;
         case 9 :
 
         case 0 :
