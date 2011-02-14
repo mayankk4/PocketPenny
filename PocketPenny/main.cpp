@@ -143,11 +143,7 @@ int main(int argc, char *argv[])
     QTextStream qtin(&file);
     file.open(stdin, QIODevice::ReadOnly);
 	
-    ProfileInfo* passPI;
-    QString name;
-    int currentsalary;
-    int currentbudget;
-    int lastProId;
+
     switch(option){
 
         case 1 :
@@ -193,23 +189,11 @@ int main(int argc, char *argv[])
         case 7 :
             pm->viewProfileInfo();
             break;
+
         case 8 :
-            /*cout << "Enter profileinfo : ";
-
-            cout << "Please enter your name : ";
-            qtin >> name;
-            cout << "Please enter your currentsalary : ";
-            qtin >> currentsalary;
-            cout << "Please enter your currentbudget : ";
-            qtin >> currentbudget;
-
-            passPI = new ProfileInfo(name,currentsalary,currentbudget);
-            lastProId = pm->insertProfileInfo(passPI);
-
-            cout<<" last inserted profile id "<<lastProId<<endl;
-            */
             editProfile();
             break;
+
         case 9 :
 
         case 0 :
