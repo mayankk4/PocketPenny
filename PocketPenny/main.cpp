@@ -1,7 +1,8 @@
 #include <QtCore/QCoreApplication>
 #include <QTextStream>
 #include <QFile>
-
+#include <QString>
+#include <QStringList>
 #include <iostream>
 #include "ProfileInfo.h"
 #include "Category.h"
@@ -14,6 +15,85 @@ using namespace std;
 basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const QString& str)
 {
    return os << qPrintable(str);
+}
+
+bool editProfile()
+{
+    bool ret = false;
+    QFile file("userprofile.txt");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    QTextStream in(&file);
+
+    QString line;
+    //while((line = f.readLine()) != EOF)
+    line = in.readLine();
+    QStringList namepair = line.split("=");
+
+    line = in.readLine();
+    QStringList salarypair = line.split("=");
+
+    line = in.readLine();
+    QStringList budgetpair = line.split("=");
+
+    file.close();
+
+    cout<<"What do u want to edit ?? "<<endl;
+    cout<<"1. Your name "<<namepair.at(1)<<endl;
+    cout<<"2. Your currentsalary "<<salarypair.at(1)<<endl;
+    cout<<"3. Your currentbudget "<<budgetpair.at(1)<<endl;
+    cout<<"Enter your choice e.g 1 "<<endl;
+
+    int option;
+    cin>>option;
+    while(option < 1 || option > 3)
+    {
+        cout<<" Invalid Option !!! Choose again"<<endl;
+        cout<<"What do u want to edit ?? "<<endl;
+        cout<<"1. Your name "<<namepair.at(1)<<endl;
+        cout<<"2. Your currentsalary "<<salarypair.at(1)<<endl;
+        cout<<"3. Your currentbudget "<<budgetpair.at(1)<<endl;
+        cout<<"Enter your choice e.g 1 "<<endl;
+        cin>>option;
+    }
+    QTextStream qtin(&file);
+    file.open(stdin, QIODevice::ReadOnly);
+    QString changedvar;
+    if(option == 1)
+    {
+        cout<<"Enter your name"<<endl;
+        qtin>>changedvar;
+        if(changedvar != "")
+            namepair.replace(1,changedvar);
+    }
+    else if(option == 2)
+    {
+        cout<<"Enter your current salary"<<endl;
+        qtin>>changedvar;
+        if(changedvar != "")
+            salarypair.replace(1,changedvar);
+    }
+
+    else
+    {
+        cout<<"Enter your current budget"<<endl;
+        qtin>>changedvar;
+        if(changedvar != "")
+            budgetpair.replace(1,changedvar);
+    }
+    file.close();
+
+    //cout<<" name "<<namepair.at(1)<<endl;
+    QFile fileop("userprofile.txt");
+    fileop.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&fileop);
+    out <<namepair.at(0) + " = " + namepair.at(1)<<endl;
+    out <<salarypair.at(0) + " = " + salarypair.at(1)<<endl;
+    out <<budgetpair.at(0) + " = " + budgetpair.at(1)<<endl;
+    //out <<salarypair<<endl;
+    //out <<budgetpair<<endl;
+    file.close();
+    return ret;
 }
 
 int main(int argc, char *argv[])
@@ -114,7 +194,7 @@ int main(int argc, char *argv[])
             pm->viewProfileInfo();
             break;
         case 8 :
-            cout << "Enter profileinfo : ";
+            /*cout << "Enter profileinfo : ";
 
             cout << "Please enter your name : ";
             qtin >> name;
@@ -127,6 +207,8 @@ int main(int argc, char *argv[])
             lastProId = pm->insertProfileInfo(passPI);
 
             cout<<" last inserted profile id "<<lastProId<<endl;
+            */
+            editProfile();
             break;
         case 9 :
 
