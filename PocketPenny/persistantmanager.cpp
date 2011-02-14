@@ -239,10 +239,10 @@ bool PersistantManager :: viewExpense(){
             int expId =  query.value(0).toInt();
             cout << expId << endl;
 
-            QString expTime =  query.value(1).toTime().toString();
+            QString expTime =  query.value(1).toString();
             cout <<  qPrintable(expTime) << endl;
 
-            QString expDate =  query.value(2).toDate().toString();
+            QString expDate =  query.value(2).toString();
             cout <<  qPrintable(expDate) << endl;
 
             int expCatId =  query.value(3).toInt();
