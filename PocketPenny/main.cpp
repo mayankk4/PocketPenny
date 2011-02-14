@@ -1,7 +1,7 @@
 #include <QtCore/QCoreApplication>
 #include <QTextStream>
 #include <QFile>
-#include <QString>b/nb/n
+#include <QString>
 #include <QStringList>
 #include <iostream>
 #include "ProfileInfo.h"
