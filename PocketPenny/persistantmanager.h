@@ -36,8 +36,8 @@ public:
     int getCatIdFromCatName(QString catName);
 
     // for UserProfile Table
-    int insertProfileInfo(ProfileInfo*);
-    bool viewProfileInfo();
+    //int insertProfileInfo(ProfileInfo*);
+    //bool viewProfileInfo();
 
     // for Months Table
 
@@ -45,11 +45,12 @@ public:
 
     bool createExpenseTable();
     bool createCategoryTable();
-    bool createProfileInfoTable();
+//    bool createProfileInfoTable();
 //    bool createMonthRecordTable();
 
-private:
+public:
     QSqlDatabase db;
+    // code review : make this private and create getter and setter
 };
 
 #endif // PERSISTANTMANAGER_H

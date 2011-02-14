@@ -1,7 +1,7 @@
 #include <QtCore/QCoreApplication>
 #include <QTextStream>
 #include <QFile>
-#include <QString>
+#include <QString>b/nb/n
 #include <QStringList>
 #include <iostream>
 #include "ProfileInfo.h"
@@ -15,6 +15,102 @@ using namespace std;
 basic_ostream<char>& operator<<(std::basic_ostream<char>& os, const QString& str)
 {
    return os << qPrintable(str);
+}
+
+void firstRunCreateProfile()
+{
+    QFile file("userprofile.txt");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    QTextStream in(&file);
+
+    QString line;
+    //while((line = f.readLine()) != EOF)
+    line = in.readLine();
+    QStringList namepair = line.split("=");
+
+    line = in.readLine();
+    QStringList salarypair = line.split("=");
+
+    line = in.readLine();
+    QStringList budgetpair = line.split("=");
+
+    file.close();
+
+    QTextStream qtin(&file);
+    file.open(stdin, QIODevice::ReadOnly);
+
+    QString changedvar="";
+
+    while(changedvar == "")
+     {
+      cout<<"Enter your name :"<<endl;
+      qtin>>changedvar;
+     }
+     namepair.replace(1,changedvar);
+     changedvar = "";
+
+     while(changedvar == "")
+     {
+      cout<<"Enter your current Salary :"<<endl;
+      qtin>>changedvar;
+     }
+     salarypair.replace(1,changedvar);
+     changedvar = "";
+
+     while(changedvar == "")
+     {
+      cout<<"Enter your current budget :"<<endl;
+      qtin>>changedvar;
+     }
+     budgetpair.replace(1,changedvar);
+     changedvar = "";
+
+    file.close();
+
+    QFile fileop("userprofile.txt");
+    fileop.open(QIODevice::WriteOnly | QIODevice::Text);
+    QTextStream out(&fileop);
+    out <<namepair.at(0) + " = " + namepair.at(1)<<endl;
+    out <<salarypair.at(0) + " = " + salarypair.at(1)<<endl;
+    out <<budgetpair.at(0) + " = " + budgetpair.at(1)<<endl;
+    file.close();
+}
+
+void firstRunPopulateCatagories(PersistantManager* pm)
+{
+    bool ret1,ret2,ret3 = false;
+
+    if (pm->db.isOpen())
+        {
+        QSqlQuery query;
+        ret1 = query.exec(QString("insert into category values(NULL,'food')")
+        );
+
+        (ret1) ? (cout << endl << "catagory food inserted"<< endl) : (cout << "catagory food insert failed");
+
+        ret2 = query.exec(QString("insert into category values(NULL,'travel')")
+        );
+        (ret2) ? (cout<< "catagory travel inserted"<< endl) : (cout << "catagory travel insert failed");
+
+        ret3 = query.exec(QString("insert into category values(NULL,'misc')")
+        );
+        (ret3) ? (cout<< "catagory misc inserted"<< endl << endl) : (cout << "catagory misc insert failed");
+
+    }
+}
+
+void firstRun(PersistantManager* pm)
+{
+ cout << endl
+      << "Welcome first Time user !!!" << endl;
+ cout << "Welcome first Time user !!!" << endl;
+ cout << "Welcome first Time user !!!" << endl;
+ cout << "Welcome first Time user !!!" << endl;
+ cout << "Welcome first Time user !!!" << endl;
+
+ firstRunCreateProfile();
+ firstRunPopulateCatagories(pm);
 }
 
 bool editProfile()
@@ -83,7 +179,6 @@ bool editProfile()
     }
     file.close();
 
-    //cout<<" name "<<namepair.at(1)<<endl;
     QFile fileop("userprofile.txt");
     fileop.open(QIODevice::WriteOnly | QIODevice::Text);
     QTextStream out(&fileop);
@@ -94,6 +189,34 @@ bool editProfile()
     //out <<budgetpair<<endl;
     file.close();
     return ret;
+}
+
+void viewProfileInfo()
+{
+
+    QFile file("userprofile.txt");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+
+    QTextStream in(&file);
+
+    QString line;
+    //while((line = f.readLine()) != EOF)
+    line = in.readLine();
+    QStringList namepair = line.split("=");
+
+    line = in.readLine();
+    QStringList salarypair = line.split("=");
+
+    line = in.readLine();
+    QStringList budgetpair = line.split("=");
+
+    file.close();
+
+    cout<<"Your name "<<namepair.at(1)<<endl;
+    cout<<"Your currentsalary "<<salarypair.at(1)<<endl;
+    cout<<"Your currentbudget "<<budgetpair.at(1)<<endl;
+
+    file.close();
 }
 
 int main(int argc, char *argv[])
@@ -109,14 +232,19 @@ int main(int argc, char *argv[])
     cout<<"Opening Db :" << (pm->openDB() ? " Successful" : " Failed") << endl;
 
     cout<<"Initializing Db " << endl;
-    pm->initDB();
+    bool firstRunFlag = pm->initDB();
+    if(firstRunFlag)
+    {
+     firstRun(pm);
+    }
 
     cout << "DB Initialised" << endl;
 
     cout << "Connections created Successfully ... " << endl << endl;
 
     while(1){
-    cout << "Enter 1 to add expense"  << endl
+    cout << endl
+         << "Enter 1 to add expense"  << endl
          << "Enter 2 to view all expenses" << endl
          << "Enter 3 to edit an expense" << endl
 
@@ -187,7 +315,7 @@ int main(int argc, char *argv[])
         case 6 :
 
         case 7 :
-            pm->viewProfileInfo();
+            viewProfileInfo();
             break;
 
         case 8 :

@@ -1,3 +1,0 @@
-name = gaurav
-currentsalary = 12500
-currentbudget = 10000
