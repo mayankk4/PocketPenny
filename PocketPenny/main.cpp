@@ -279,11 +279,11 @@ int main(int argc, char *argv[])
 
             cout << "Enter expense category name : " << endl;
             qtin >> expCatName;
-            cout << "the name u entered is : " << qPrintable(expCatName) <<endl;
+            //cout << "the name u entered is : " << qPrintable(expCatName) <<endl;
 
             cout << "Enter expense amount : " << endl;
             qtin >> expAmount;            
-            cout << "the amount u entered is : " << expAmount <<endl;
+            //cout << "the amount u entered is : " << expAmount <<endl;
 
             lastExpId = pm->insertExpense(expCatName, expAmount);
             break;

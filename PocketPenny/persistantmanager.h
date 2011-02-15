@@ -33,13 +33,14 @@ public:
     // for Category Table
     int insertCategory(Category*);
     bool viewCategory();
-    int getCatIdFromCatName(QString catName);
+    int getCatIdFromCatName(QString);
+    QString getCatNameFromCatId(int);
 
     // for UserProfile Table
     //int insertProfileInfo(ProfileInfo*);
     //bool viewProfileInfo();
 
-    // for Months Table
+    // for Month Records Table
 
     QSqlError lastError();
 

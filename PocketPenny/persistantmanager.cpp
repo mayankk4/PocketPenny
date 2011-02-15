@@ -139,6 +139,21 @@ int PersistantManager::getCatIdFromCatName(QString catName)
     return id;
 }
 
+QString PersistantManager::getCatNameFromCatId(int catId)
+{
+    QString catName;
+    QSqlQuery query(QString("select catname from category where catid = %1")
+                    .arg(catId) );
+
+    if(query.next())
+    {
+        catName = query.value(0).toString();
+    }
+
+    return catName;
+}
+
+
 /***********************************************************/
 
 bool PersistantManager::createExpenseTable()
@@ -202,12 +217,14 @@ int PersistantManager::insertExpense(QString expCatName, float expAmount)
         //http://www.sqlite.org/autoinc.html
         // NULL = is the keyword for the autoincrement to generate next value
 
-        cout << qPrintable(QTime::currentTime().toString()) << endl;
-             //<< qPrintable(QDate::currentDate().toString()) << endl;
-        cout<<" day "<<expDay<<endl;
-        cout<<" month "<<expMonth<<endl;
-        cout<<" year "<<expYear<<endl;
+//        cout << qPrintable(QTime::currentTime().toString()) << endl;
+//             //<< qPrintable(QDate::currentDate().toString()) << endl;
+//        cout<<" day "<<expDay<<endl;
+//        cout<<" month "<<expMonth<<endl;
+//        cout<<" year "<<expYear<<endl;
+
         QSqlQuery query;
+
         ret = query.exec(QString("insert into expense values(NULL,'%1',%2,%3,%4,%5,%6)")
                          .arg(QTime::currentTime().toString())
                          .arg(expDay)
@@ -217,7 +234,7 @@ int PersistantManager::insertExpense(QString expCatName, float expAmount)
                          .arg(expAmount)
                          );
 
-        cout << "insert expense ret " << ret << endl << endl;
+        cout << "Insert expense ret " << ret << endl << endl;
 
         // Get database given autoincrement value
         if (ret)
@@ -241,21 +258,29 @@ bool PersistantManager :: viewExpense(){
 
         while(query.next())
             {
-            cout << "expense : " << endl;
+            cout << "---------" << endl;
+
             int expId =  query.value(0).toInt();
             cout << expId << endl;
 
             QString expTime =  query.value(1).toString();
             cout <<  qPrintable(expTime) << endl;
 
-            QString expDate =  query.value(2).toString();
-            cout <<  qPrintable(expDate) << endl;
+            QString expDateDay =  query.value(2).toString();
+            cout <<  qPrintable(expDateDay) << " - ";
+            QString expDateMonth =  query.value(3).toString();
+            cout <<  qPrintable(expDateMonth)  << " - ";
+            QString expDateYear =  query.value(4).toString();
+            cout <<  qPrintable(expDateYear) << endl;
 
-            int expCatId =  query.value(3).toInt();
-            cout <<  expCatId << endl;
+            int expCatId =  query.value(5).toInt();
+            QString expCatIdName = getCatNameFromCatId(expCatId);
+            cout <<  qPrintable(expCatIdName) << endl;
 
-            int amount =  query.value(4).toInt();
+            int amount =  query.value(6).toInt();
             cout <<  amount << endl;
+
+            cout << "---------" << endl;
 
             ret = true;
             }
