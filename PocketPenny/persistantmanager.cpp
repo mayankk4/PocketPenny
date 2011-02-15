@@ -152,11 +152,13 @@ bool PersistantManager::createExpenseTable()
     if (db.isOpen())
         {
         QSqlQuery query;
-
+        //here catid must be int
         ret = query.exec("create table expense "
                   "(expid integer primary key, "
                   "exptime TEXT, "
-                  "expdate TEXT, "
+                  "expday integer, "
+                  "expmonth integer, "
+                  "expyear integer, "
                   "catid varchar(30), "
                   "amount float,"
                   " FOREIGN KEY(catid) REFERENCES category(catid));"
@@ -187,24 +189,30 @@ bool PersistantManager::createExpenseTable()
 int PersistantManager::insertExpense(QString expCatName, float expAmount)
     {
     int newId = -1;
-    int expCatId;
+    int expCatId, expDay, expMonth, expYear;
 
     bool ret = false;
 
     expCatId = getCatIdFromCatName(expCatName);
-
+    expDay = QDate::currentDate().day();
+    expMonth = QDate::currentDate().month();
+    expYear = QDate::currentDate().year();
     if (db.isOpen())
         {
         //http://www.sqlite.org/autoinc.html
         // NULL = is the keyword for the autoincrement to generate next value
 
-        cout << qPrintable(QTime::currentTime().toString()) << endl
-             << qPrintable(QDate::currentDate().toString()) << endl;
-
+        cout << qPrintable(QTime::currentTime().toString()) << endl;
+             //<< qPrintable(QDate::currentDate().toString()) << endl;
+        cout<<" day "<<expDay<<endl;
+        cout<<" month "<<expMonth<<endl;
+        cout<<" year "<<expYear<<endl;
         QSqlQuery query;
-        ret = query.exec(QString("insert into expense values(NULL,'%1','%2',%3,%4)")
+        ret = query.exec(QString("insert into expense values(NULL,'%1',%2,%3,%4,%5,%6)")
                          .arg(QTime::currentTime().toString())
-                         .arg(QDate::currentDate().toString())
+                         .arg(expDay)
+                         .arg(expMonth)
+                         .arg(expYear)
                          .arg(expCatId)
                          .arg(expAmount)
                          );

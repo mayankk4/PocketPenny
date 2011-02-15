@@ -5,16 +5,20 @@ Expense::Expense()
     expId = 0;
     catId = 0;
     amount = 0.0;
-    expDate = *(new QDate());
+    expDay = 0;
+    expMonth = 0;
+    expYear = 0;
     expTime = *(new QTime());
 }
 
-Expense::Expense(int catId, float amount, QDate expDate, QTime expTime)
+Expense::Expense(int catId, float amount, int expDay, int expMonth, int expYear, QTime expTime)
 {
     this->expId = 0;
     this->catId = catId;
     this->amount = amount;
-    this->expDate = expDate;
+    this->expDay = expDay;
+    this->expMonth = expMonth;
+    this->expYear = expYear;
     this->expTime = expTime;
 }
 
@@ -49,14 +53,34 @@ float Expense::getAmount()
     return amount;
 }
 
-void Expense::setExpDate(QDate expDate)
+void Expense::setExpDay(int expDay)
 {
-    this->expDate = expDate;
+    this->expDay = expDay;
 }
 
-QDate Expense::getExpDate()
+int Expense::getExpDay()
 {
-    return expDate;
+    return expDay;
+}
+
+void Expense::setExpMonth(int expMonth)
+{
+    this->expMonth = expMonth;
+}
+
+int Expense::getExpMonth()
+{
+    return expMonth;
+}
+
+void Expense::setExpYear(int expYear)
+{
+    this->expYear = expYear;
+}
+
+int Expense::getExpYear()
+{
+    return expYear;
 }
 
 void Expense::setExpTime(QTime expTime)
